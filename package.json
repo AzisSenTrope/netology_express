@@ -1,0 +1,23 @@
+{
+  "name": "netology_express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+   "start-server": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AzisSenTrope/netology_express.git"
+  },
+  "author": "Yaroslav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AzisSenTrope/netology_express/issues"
+  },
+  "homepage": "https://github.com/AzisSenTrope/netology_express#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  }
+}
