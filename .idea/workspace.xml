@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5d7ad8c3-b578-410a-90df-f30589b4b03c" name="Changes" comment="" />
+    <list default="true" id="5d7ad8c3-b578-410a-90df-f30589b4b03c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bars.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/endpoints/endpoints.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/middleware/file.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/public/files/1629866532557-demo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/public/files/demo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/public/files/demo1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/books.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/server/server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/const.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/delete-file.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,12 +48,22 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/belykh-yar/Documents/Netology/netology_express",
+    "last_opened_file_path": "/Users/belykh-yar/Documents/Netology/netology_express/src/public/files",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "web.server",
     "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/public/files" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/middleware" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/server" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="start-server" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -61,7 +89,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1680368474762</updated>
-      <workItem from="1680368475960" duration="6593000" />
+      <workItem from="1680368475960" duration="15475000" />
+      <workItem from="1680458127850" duration="544000" />
+      <workItem from="1680715994866" duration="1364000" />
+      <workItem from="1680720634293" duration="4560000" />
+      <workItem from="1680811641206" duration="1565000" />
+      <workItem from="1680871782635" duration="827000" />
+      <workItem from="1680873181366" duration="16000" />
+      <workItem from="1680873245486" duration="783000" />
+      <workItem from="1680874114585" duration="2002000" />
     </task>
     <servers />
   </component>
