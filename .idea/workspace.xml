@@ -7,7 +7,6 @@
       <change afterPath="$PROJECT_DIR$/config.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/endpoints/endpoints.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/middleware/file.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/public/files/1629866532557-demo.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/public/files/demo.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/public/files/demo1.png" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/routes/books.js" afterDir="false" />
@@ -97,7 +96,7 @@
       <workItem from="1680871782635" duration="827000" />
       <workItem from="1680873181366" duration="16000" />
       <workItem from="1680873245486" duration="783000" />
-      <workItem from="1680874114585" duration="2002000" />
+      <workItem from="1680874114585" duration="2675000" />
     </task>
     <servers />
   </component>
