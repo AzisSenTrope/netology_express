@@ -1,0 +1,45 @@
+[1] $ docker pull node:15.14
+    15.14: Pulling from library/node
+    41f38ce3010a: Already exists
+    ce440adabe2a: Already exists
+    b7c0a158e8c1: Already exists
+    d82fbf846f6f: Already exists
+    c190b75eb2b4: Already exists
+    1ce0b6aec0ac: Already exists
+    d461dd6a01f5: Already exists
+    860542326137: Already exists
+    fba155217a46: Already exists
+    Digest: sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+    Status: Downloaded newer image for node:15.14
+    docker.io/library/node:15.14
+
+$ mkdir data
+
+[2] $ docker run --name first_node -d -it -v '/Users/belykh-yar/Documents/Netology/netology_express/data:/var/first/data' node:15.14
+    897c4b2bc744de28f3017002d80447af17534c18171c031ca9ba152f902d7b61
+
+[3] $ docker run --name second_node -d -it -v '/Users/belykh-yar/Documents/Netology/netology_express/data:/var/first/data' node:15.14
+    01c529c662353d9375313749eda83d1e00dbc60f6d83ed0807b06c185fc9fe4f
+
+[4] $ docker exec first_node touch /var/first/data/test1
+
+[5] $ touch test2
+
+[6] $ docker exec second_node ls /var/second/data
+
+[7] $ docker stop first_node
+first_node
+$ docker stop second_node
+second_node
+
+[8] $ docker rm first_node
+first_node
+$ docker rm second_node
+second_node
+
+[9] $ docker rmi node:15.14
+      Untagged: node:15.14
+      Untagged: node@sha256:608bba799613b1ebf754034ae008849ba51e88b23271412427b76d60ae0d0627
+      Deleted: sha256:c9b1cc6b53791ec5df6210b2d454d12b7a2f181f0a6b0e8f1210c8386473eba7
+
+
