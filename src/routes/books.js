@@ -3,7 +3,7 @@ const router = express.Router()
 const fileMulter = require('../middleware/file')
 
 const ENDPOINTS = require('../endpoints/endpoints');
-const {TEST_RESPONSE, Book, STORE} = require('../utils/utils');
+const {Book, STORE} = require('../utils/utils');
 const {dirname} = require('../../config');
 const {STATUSES} = require('../utils/const');
 const deleteFile = require('../utils/delete-file');
@@ -25,17 +25,15 @@ router.get(ENDPOINTS.BOOK_DOWNLOAD, (req, res) => {
         res.status(STATUSES.SERVER_ERROR);
         res.json(error);
     }
-
-})
-
-router.post(ENDPOINTS.LOGIN, (req, res) => {
-    res.json(TEST_RESPONSE);
 })
 
 router.get(ENDPOINTS.BOOKS, (req, res) => {
     const {books} = STORE;
-    res.json(books);
-})
+    res.render("books/index", {
+        title: "Books",
+        books: books,
+    });
+});
 
 router.get(ENDPOINTS.BOOK_ID, (req, res) => {
     const {books} = STORE;
@@ -43,35 +41,35 @@ router.get(ENDPOINTS.BOOK_ID, (req, res) => {
     const idx = books.findIndex(el => el.id === id);
 
     if( idx !== -1) {
-        res.json(books[idx]);
+        res.render("books/view", {
+            title: "Books | view",
+            books: books[idx],
+        });
         return;
     }
 
     res.status(STATUSES.NOT_FOUND);
     res.json('404 | страница не найдена');
+    res.redirect('/404');
 
 })
 
-router.post(ENDPOINTS.BOOKS, fileMulter.single('fileBook'), (req, res) => {
+router.get(ENDPOINTS.BOOK_UPDATE, (req, res) => {
     const {books} = STORE;
-    const {file} = req
+    const {id} = req.params;
+    const idx = books.findIndex(el => el.id === id);
 
-    if (file) {
-        const fileBook = file.path
-
-        const newBook = new Book({...req.body, fileBook});
-        books.push(newBook);
-
-        res.status(STATUSES.CREATED);
-        res.json(newBook);
-        return;
+    if (idx === -1) {
+        res.redirect('/404');
     }
 
-    res.status(STATUSES.INVALID);
-    res.send({error: 'Invalid data'});
-})
+    res.render("books/update", {
+        title: "BOOKS | view",
+        books: books[idx],
+    });
+});
 
-router.put(ENDPOINTS.BOOK_ID, fileMulter.single('fileBook'), (req, res) => {
+router.post(ENDPOINTS.BOOK_UPDATE, fileMulter.single('fileBook'), (req, res) => {
     const {books} = STORE;
     const {id} = req.params;
     const idx = books.findIndex(el => el.id === id);
@@ -88,25 +86,60 @@ router.put(ENDPOINTS.BOOK_ID, fileMulter.single('fileBook'), (req, res) => {
             }
         }
 
-        const fileBook = file.path;
-        books[idx] = {
-            ...books[idx],
-            ...req.body,
-            fileBook,
+        if (books[idx].fileBook) {
+            books[idx] = {
+                ...books[idx],
+                ...req.body,
+            }
+        } else {
+            const fileBook = file.path;
+            const fileName = file.originalname;
+            books[idx] = {
+                ...books[idx],
+                ...req.body,
+                fileName,
+                fileBook,
+            }
         }
 
-        res.json(books[idx]);
+        res.redirect(`../../books/${id}`);
         return;
     }
 
-    res.status(STATUSES.NOT_FOUND);
-    res.json('404 | страница не найдена');
+    res.redirect('/404');
 })
 
-router.delete(ENDPOINTS.BOOK_ID, (req, res) => {
-    const {books} = STORE
-    const {id} = req.params
-    const idx = books.findIndex(el => el.id === id)
+router.get(ENDPOINTS.BOOK_CREATE, (req, res) => {
+    res.render("books/create", {
+        title: "BOOKS | create",
+        books: {},
+    });
+});
+
+router.post(ENDPOINTS.BOOK_CREATE, fileMulter.single('fileBook'), (req, res) => {
+    const {books} = STORE;
+    const {file} = req
+
+    if (file) {
+        const fileBook = file.path
+        const fileName = file.originalname;
+
+        const newBook = new Book({...req.body, fileBook, fileName});
+        books.push(newBook);
+
+        res.status(STATUSES.CREATED);
+        res.redirect(`books/${newBook.id}`);
+        return;
+    }
+
+    res.status(STATUSES.INVALID);
+    res.send({error: 'Invalid data'});
+})
+
+router.post(ENDPOINTS.BOOK_DELETE, (req, res) => {
+    const {books} = STORE;
+    const {id} = req.params;
+    const idx = books.findIndex(el => el.id === id);
 
     if (idx !== -1){
         if (books[idx].fileBook) {
@@ -120,12 +153,13 @@ router.delete(ENDPOINTS.BOOK_ID, (req, res) => {
         }
 
         books.splice(idx, 1)
-        res.json(true)
+        res.redirect(ENDPOINTS.BOOKS);
         return;
     }
 
     res.status(STATUSES.NOT_FOUND)
-    res.json('404 | страница не найдена')
+    res.redirect('/404');
 })
+
 
 module.exports = router;
