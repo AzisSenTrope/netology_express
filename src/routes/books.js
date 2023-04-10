@@ -20,7 +20,7 @@ router.get(ENDPOINTS.BOOK_DOWNLOAD, (req, res) => {
     }
 
     try {
-        res.sendFile(dirname +  '/' + book.fileBook);
+        res.download(dirname +  '/' + book.fileBook, book.fileName);
     } catch (error) {
         res.status(STATUSES.SERVER_ERROR);
         res.json(error);
