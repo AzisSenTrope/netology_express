@@ -1,0 +1,20 @@
+version: "3"
+services:
+  books:
+    build: ./book-service
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./book-service/src/db:/app/src/db
+      - ./book-service/src/public:/app/src/public
+    environment:
+      - DB_PATH=/app/src/db
+      - COUNTER_URL=http://counter:3001
+  counter:
+    build: ./counter
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./counter/db:/app/db
+    environment:
+      - DB_PATH=/app/db

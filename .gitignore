@@ -1,2 +1,3 @@
-node_modules
+book-service/node_modules
+counter/node_modules
 .idea
