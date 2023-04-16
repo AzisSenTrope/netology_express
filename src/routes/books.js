@@ -3,129 +3,119 @@ const router = express.Router()
 const fileMulter = require('../middleware/file')
 
 const ENDPOINTS = require('../endpoints/endpoints');
-const {TEST_RESPONSE, Book, STORE} = require('../utils/utils');
+const {TEST_RESPONSE} = require('../utils/utils');
 const {dirname} = require('../../config');
 const {STATUSES} = require('../utils/const');
 const deleteFile = require('../utils/delete-file');
+const Book = require('../model/bookModel');
 
-router.get(ENDPOINTS.BOOK_DOWNLOAD, (req, res) => {
-    const {books} = STORE;
+router.get(ENDPOINTS.BOOK_DOWNLOAD, async (req, res) => {
     const {id} = req.params;
-    const book = books.find(el => el.id === id);
-
-    if (!book) {
-        res.status(STATUSES.NOT_FOUND);
-        res.json('404 | страница не найдена');
-        return;
-    }
-
     try {
-        res.sendFile(dirname +  '/' + book.fileBook);
-    } catch (error) {
-        res.status(STATUSES.SERVER_ERROR);
-        res.json(error);
-    }
+        const book = await Book.findById(id).select('-__v');
 
+        if (!book) {
+            res.status(STATUSES.NOT_FOUND);
+            res.json('404 | страница не найдена');
+            return;
+        }
+
+        res.download(dirname +  '/' + book.fileBook, book.fileName);
+    } catch (err) {
+        res.status(STATUSES.SERVER_ERROR);
+        res.json(err);
+    }
 })
 
 router.post(ENDPOINTS.LOGIN, (req, res) => {
     res.json(TEST_RESPONSE);
 })
 
-router.get(ENDPOINTS.BOOKS, (req, res) => {
-    const {books} = STORE;
-    res.json(books);
-})
-
-router.get(ENDPOINTS.BOOK_ID, (req, res) => {
-    const {books} = STORE;
-    const {id} = req.params;
-    const idx = books.findIndex(el => el.id === id);
-
-    if( idx !== -1) {
-        res.json(books[idx]);
-        return;
+router.get(ENDPOINTS.BOOKS, async (req, res) => {
+    try {
+        const books = await Book.find().select('-__v')
+        res.json(books);
+    } catch (err) {
+        res.status(STATUSES.SERVER_ERROR);
+        res.json(err);
     }
 
-    res.status(STATUSES.NOT_FOUND);
-    res.json('404 | страница не найдена');
-
 })
 
-router.post(ENDPOINTS.BOOKS, fileMulter.single('fileBook'), (req, res) => {
-    const {books} = STORE;
+router.get(ENDPOINTS.BOOK_ID, async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const book = await Book.findById(id).select('-__v');
+        res.json(book);
+    } catch (err) {
+        res.status(STATUSES.SERVER_ERROR);
+        res.json(err);
+    }
+})
+
+router.post(ENDPOINTS.BOOKS, fileMulter.single('fileBook'), async (req, res) => {
     const {file} = req
 
     if (file) {
-        const fileBook = file.path
-
-        const newBook = new Book({...req.body, fileBook});
-        books.push(newBook);
-
-        res.status(STATUSES.CREATED);
-        res.json(newBook);
-        return;
-    }
-
-    res.status(STATUSES.INVALID);
-    res.send({error: 'Invalid data'});
-})
-
-router.put(ENDPOINTS.BOOK_ID, fileMulter.single('fileBook'), (req, res) => {
-    const {books} = STORE;
-    const {id} = req.params;
-    const idx = books.findIndex(el => el.id === id);
-
-    if (idx !== -1){
-        const {file} = req;
-        if (file) {
-            try {
-                deleteFile(dirname + '/' + books[idx].fileBook);
-            } catch (err) {
-                res.status(STATUSES.SERVER_ERROR);
-                res.json(err);
-                return;
-            }
-        }
-
         const fileBook = file.path;
-        books[idx] = {
-            ...books[idx],
-            ...req.body,
-            fileBook,
+        const newBook = new Book({...req.body, fileBook});
+
+        try {
+            await newBook.save();
+            res.status(STATUSES.CREATED);
+            res.json(newBook)
+        } catch (err) {
+            res.status(STATUSES.SERVER_ERROR);
+            res.json(err);
         }
-
-        res.json(books[idx]);
-        return;
     }
-
-    res.status(STATUSES.NOT_FOUND);
-    res.json('404 | страница не найдена');
 })
 
-router.delete(ENDPOINTS.BOOK_ID, (req, res) => {
-    const {books} = STORE
-    const {id} = req.params
-    const idx = books.findIndex(el => el.id === id)
+router.put(ENDPOINTS.BOOK_ID, fileMulter.single('fileBook'), async (req, res) => {
+    const {id} = req.params;
 
-    if (idx !== -1){
-        if (books[idx].fileBook) {
-            try {
-                deleteFile(dirname + '/' + books[idx].fileBook);
-            } catch (err) {
-                res.status(STATUSES.SERVER_ERROR);
-                res.json(err);
-                return;
+    try {
+        const book = await Book.findById(id).select('-__v');
+        if (book) {
+            const {file} = req;
+            if (file) {
+                deleteFile(dirname + '/' + book.fileBook);
+                const fileBook = file.path;
+                const fileName = file.originalname;
+                await Book.findByIdAndUpdate(id, {
+                    ...req.body,
+                    fileName,
+                    fileBook,
+                });
+            } else {
+                await Book.findByIdAndUpdate(id, {
+                    ...req.body,
+                });
             }
+
+            res.redirect(`/api/books/${id}`);
         }
-
-        books.splice(idx, 1)
-        res.json(true)
-        return;
+    } catch (err) {
+        res.status(STATUSES.SERVER_ERROR);
+        res.json(err);
     }
+})
 
-    res.status(STATUSES.NOT_FOUND)
-    res.json('404 | страница не найдена')
+router.delete(ENDPOINTS.BOOK_ID, async (req, res) => {
+    const {id} = req.params
+
+    try {
+        const book = await Book.findById(id).select('-__v');
+        if (book) {
+            await Book.deleteOne({_id: id});
+            deleteFile(dirname + '/' + book.fileBook);
+            res.json(true);
+        }
+    } catch (err) {
+        res.status(STATUSES.SERVER_ERROR);
+        res.json(err);
+    }
 })
 
 module.exports = router;
