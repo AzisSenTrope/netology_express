@@ -22,7 +22,4 @@ services:
     ports:
       - "3002:3002"
     volumes:
-      - ./src/db:/app/src/db
       - ./src/public:/app/src/public
-    environment:
-      - DB_PATH=/app/src/db
