@@ -20,7 +20,7 @@ router.post(ENDPOINTS.LOGIN,
         res.redirect('me');
 });
 
-router.get(ENDPOINTS.REGISTER,   (req, res) => {
+router.get(ENDPOINTS.SING_UP,   (req, res) => {
     res.render('user/register', {
         error: '',
         isAuthenticated: req.isAuthenticated(),
@@ -28,7 +28,7 @@ router.get(ENDPOINTS.REGISTER,   (req, res) => {
     })
 });
 
-router.post(ENDPOINTS.REGISTER,
+router.post(ENDPOINTS.SING_UP,
     (req, res, next) => {
         const isBusy = db.users.isUsernameBusy(req.body.username);
         if (isBusy) {

@@ -11,5 +11,4 @@ module.exports = {
     PROFILE: '/user/me',
     SING_UP: '/user/signup',
     LOGOUT: '/user/logout',
-    REGISTER: '/user/register',
 };
