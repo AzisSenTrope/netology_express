@@ -1,0 +1,49 @@
+<form method="POST" class="mt-5" enctype="multipart/form-data" target="_blank">
+    <div class="form-group">
+        <label for="inputTitle">Заголовок</label>
+        <input type="text"
+               value="<%= books.title %>"
+               name="title"
+               class="form-control"
+               id="inputTitle"
+               <%= required %>
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="inputDesc">Описание</label>
+        <textarea
+                rows="3"
+                name="description"
+                class="form-control"
+                id="inputDesc"
+        ><%= books.description %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="inputAuthors">Авторы</label>
+        <input type="text"
+               value="<%= books.authors %>"
+               name="authors"
+               class="form-control"
+               id="authorsTitle">
+    </div>
+
+    <div class="form-group">
+        <label for="inputFavorite">Избранное</label>
+        <input type="text"
+               value="<%= books.favorite %>"
+               name="favorite"
+               class="form-control"
+               id="favoriteTitle">
+    </div>
+
+    <label class="form-group">
+        <span class="book-form__label_text">Файл</span>
+        <input type="file" name="fileBook" accept="application/pdf" <%= required %>>
+    </label>
+
+    <div class="form-group text-right ">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </div>
+</form>

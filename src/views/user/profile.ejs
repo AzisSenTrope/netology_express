@@ -1,0 +1,16 @@
+<%- include('../port/layout-start', {title: title}) %>
+<%- include('../port/menu') %>
+
+<div>
+    <p class="card-text"><b>ID:</b>         <%= user.id %><br /></p>
+    <p class="card-text"><b>Username:</b>   <%= user.username %><br /></p>
+    <p class="card-text"> <b>Name:</b>       <%= user.displayName %><br /></p>
+    <p class="card-text"><% if (user.emails) { %>
+        <b>Email:</b>  <%= user.email %><br />
+    <% } %></p>
+</div>
+<a class="btn btn-sm btn-primary" href="/api/user/logout/">
+    <i aria-hidden="true">Выйти</i>
+</a>
+
+<%- include('../port/layout-end') %>
