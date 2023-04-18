@@ -1,5 +1,6 @@
 const {v4: uuid} = require("uuid");
 const TEST_RESPONSE = {id: 1, mail: "test@mail.ru" };
+const db = require('../db');
 
 class Book {
     constructor(data) {
@@ -39,8 +40,29 @@ const STORE = {
     ],
 };
 
+const verify = (username, password, done) => {
+    db.users.findByUsername(username, (err, user) => {
+        if (err) {return done(err)}
+        if (!user) { return done(null, false) }
+
+        if( !db.users.verifyPassword(user, password)) {
+            return done(null, false)
+        }
+
+        return done(null, user)
+    })
+}
+
+const options = {
+    usernameField: "username",
+    passwordField: "password",
+}
+
+
 module.exports = {
     TEST_RESPONSE,
     Book,
     STORE,
+    verify,
+    options,
 }

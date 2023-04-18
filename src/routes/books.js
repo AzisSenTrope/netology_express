@@ -32,6 +32,7 @@ router.get(ENDPOINTS.BOOKS, (req, res) => {
     res.render("books/index", {
         title: "Books",
         books: books,
+        isAuthenticated: req.isAuthenticated(),
     });
 });
 
@@ -66,6 +67,7 @@ router.get(ENDPOINTS.BOOK_UPDATE, (req, res) => {
     res.render("books/update", {
         title: "BOOKS | view",
         books: books[idx],
+        isAuthenticated: req.isAuthenticated(),
     });
 });
 
@@ -113,6 +115,7 @@ router.get(ENDPOINTS.BOOK_CREATE, (req, res) => {
     res.render("books/create", {
         title: "BOOKS | create",
         books: {},
+        isAuthenticated: req.isAuthenticated(),
     });
 });
 
