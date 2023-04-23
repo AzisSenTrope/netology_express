@@ -31,6 +31,10 @@
 
             </div>
         </div>
+        <div class="card">
+            <h5 class="card-title">Обсуждения</h5>
+            <%- include('chats', {user: user || {}, isAuthenticated: isAuthenticated}) %>
+        </div>
     </div>
 </div>
 

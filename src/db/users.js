@@ -8,8 +8,8 @@ const records = [
     },
     {
         id: 2,
-        username: 'jill',
-        password: 'birthday',
+        username: '2',
+        password: '2',
         displayName: 'Jill',
         email: 'jill@example.com',
     },

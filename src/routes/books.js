@@ -45,6 +45,8 @@ router.get(ENDPOINTS.BOOK_ID, (req, res) => {
         res.render("books/view", {
             title: "Books | view",
             books: books[idx],
+            isAuthenticated: req.isAuthenticated(),
+            user: req.user || {},
         });
         return;
     }
