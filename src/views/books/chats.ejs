@@ -1,0 +1,84 @@
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div id="list" class="list-group">
+
+            </div>
+        </div>
+    </div>
+
+    <% if (isAuthenticated) { %>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="username">username</label>
+                    <input
+                            placeholder="username"
+                            type="text"
+                            id="username"
+                            class="form-control"
+                            value="<%= user.username %>"
+                            readonly
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="text">message</label>
+                    <textarea
+                            placeholder="message"
+                            class="form-control"
+                            id="text"
+                    ></textarea>
+                </div>
+                <button type="submit" id="send-room" class="btn btn-primary">Отравить</button>
+            </div>
+        </div>
+    <% } %>
+
+
+
+    <script>
+        const idBook = location.pathname.split('/').pop();
+        const socket = io.connect('/', {query: `idBook=${idBook}`});
+
+        const boxList       = document.querySelector('#list');
+        const inputUsername = document.querySelector('#username');
+        const inputText     = document.querySelector('#text');
+        const sendAll       = document.querySelector('#send-all');
+        const sendMe        = document.querySelector('#send-me');
+        const sendRoom      = document.querySelector('#send-room');
+
+        const getTmp = (msg) => {
+            return `
+                <div class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <small>${msg.username}</small>
+                    </div>
+                    <p class="mb-1">${msg.text}</p>
+                </div>
+        `;
+        };
+
+        socket.emit('get-messages');
+
+        socket.on('get-messages', (messages) => {
+            messages.forEach((message) => {
+                const div = getTmp(message);
+                boxList.insertAdjacentHTML('beforeend', div);
+            })
+        })
+
+        socket.on('message-to-room', (msg) => {
+            const div = getTmp(msg)
+            boxList.insertAdjacentHTML('beforeend', div)
+        });
+
+        sendRoom.addEventListener('click', () => {
+            socket.emit('message-to-room', {
+                username: inputUsername.value,
+                text: inputText.value,
+            });
+        })
+
+    </script>
+</div>
+
